@@ -214,3 +214,6 @@ __marimo__/
 # pixi environments
 .pixi/*
 !.pixi/config.toml
+
+# Claude
+CLAUDE.md
