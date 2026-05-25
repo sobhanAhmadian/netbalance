@@ -2,26 +2,16 @@
 """
 netbalance — balance and visualize interaction networks from the command line.
 
-Subcommands
------------
-balance
-    Read a CSV of multi-cluster interaction data, apply a negative-sampling
-    strategy, and write the balanced table to stdout or a file.
+Usage
+-----
+Balance (default command)::
 
-viz
-    Read the same CSV format and produce a bipartite graph plot (PNG, PDF,
-    SVG, or display interactively).
+    netbalance data.csv -m balanced
+    netbalance data.csv -m entity-balanced --heuristic-init -o out.csv
+    cat data.csv | netbalance - -m balanced --negative-ratio 2.0
 
-Examples
---------
-::
+Visualize (subcommand)::
 
-    # balance
-    netbalance balance data.csv --method balanced
-    netbalance balance data.csv -m entity-balanced --heuristic-init -o out.csv
-    cat data.csv | netbalance balance - -m balanced --negative-ratio 2.0
-
-    # visualize
     netbalance viz data.csv -o graph.png
     netbalance viz data.csv --figsize 8 6 --pos-color steelblue
     cat data.csv | netbalance viz - --format pdf -o graph.pdf
@@ -248,18 +238,16 @@ def _add_common_args(parser: argparse.ArgumentParser) -> None:
 # ---------------------------------------------------------------------------
 
 
-def _build_balance_parser(subparsers) -> None:
+def _build_balance_parser() -> argparse.ArgumentParser:
     """
-    Register the ``balance`` subcommand.
+    Build the root parser for the balance command.
 
-    Parameters
-    ----------
-    subparsers : argparse._SubParsersAction
-        Subparser group from the root parser.
+    Returns
+    -------
+    argparse.ArgumentParser
     """
-    p = subparsers.add_parser(
-        "balance",
-        help="Balance an interaction network.",
+    p = argparse.ArgumentParser(
+        prog="netbalance",
         description=textwrap.dedent("""\
             Read a CSV interaction network and apply a balancing strategy.
 
@@ -267,6 +255,7 @@ def _build_balance_parser(subparsers) -> None:
             entity names (one per cluster) and the last column is a
             binary interaction label (0 or 1).
         """),
+        epilog="To visualize a bipartite network use: netbalance viz [options]",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     _add_common_args(p)
@@ -320,6 +309,7 @@ def _build_balance_parser(subparsers) -> None:
     eb.add_argument("--entropy-track", default=None, metavar="PATH", help="Save per-iteration entropy to this CSV.")
 
     p.set_defaults(func=_run_balance)
+    return p
 
 
 def _run_balance(args: argparse.Namespace) -> None:
@@ -377,24 +367,22 @@ def _run_balance(args: argparse.Namespace) -> None:
 # ---------------------------------------------------------------------------
 
 
-def _build_viz_parser(subparsers) -> None:
+def _build_viz_parser() -> argparse.ArgumentParser:
     """
-    Register the ``viz`` subcommand.
+    Build the standalone parser for the viz subcommand.
 
-    Parameters
-    ----------
-    subparsers : argparse._SubParsersAction
-        Subparser group from the root parser.
+    Returns
+    -------
+    argparse.ArgumentParser
     """
-    p = subparsers.add_parser(
-        "viz",
-        help="Visualize a bipartite interaction network.",
+    p = argparse.ArgumentParser(
+        prog="netbalance viz",
         description=textwrap.dedent("""\
             Read a two-cluster CSV interaction network and draw a
             bipartite graph with positive/negative proportion rings.
 
             The input format is the same CSV used by the balance
-            subcommand, but must have exactly two entity columns
+            command, but must have exactly two entity columns
             (bipartite).
         """),
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -447,6 +435,7 @@ def _build_viz_parser(subparsers) -> None:
     style.add_argument("--ring-bg-color", default="#e0e0e0", help="Ring background colour.  Default: #e0e0e0.")
 
     p.set_defaults(func=_run_viz)
+    return p
 
 
 def _run_viz(args: argparse.Namespace) -> None:
@@ -517,20 +506,13 @@ def _run_viz(args: argparse.Namespace) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     """
-    Construct the root argument parser with subcommands.
+    Return the root (balance) parser.
 
     Returns
     -------
     argparse.ArgumentParser
     """
-    parser = argparse.ArgumentParser(
-        prog="netbalance",
-        description="Balance and visualize multi-cluster interaction networks.",
-    )
-    subs = parser.add_subparsers(dest="command", help="Available commands.")
-    _build_balance_parser(subs)
-    _build_viz_parser(subs)
-    return parser
+    return _build_balance_parser()
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -542,12 +524,15 @@ def main(argv: list[str] | None = None) -> None:
     argv : list of str, optional
         Argument list (defaults to ``sys.argv[1:]``).
     """
-    parser = build_parser()
-    args = parser.parse_args(argv)
+    if argv is None:
+        argv = sys.argv[1:]
 
-    if not hasattr(args, "func"):
-        parser.print_help()
-        sys.exit(1)
+    if argv and argv[0] == "viz":
+        parser = _build_viz_parser()
+        args = parser.parse_args(argv[1:])
+    else:
+        parser = _build_balance_parser()
+        args = parser.parse_args(argv)
 
     args.func(args)
 
