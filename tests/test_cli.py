@@ -141,10 +141,6 @@ class TestMainBalance:
 
         assert len(lines_15) > len(lines_1)
 
-    def test_missing_method_flag_exits(self):
-        with pytest.raises(SystemExit):
-            main([VIRUS_HOST_CSV])
-
     def test_invalid_method_exits(self):
         with pytest.raises(SystemExit):
             main([VIRUS_HOST_CSV, "-m", "nonexistent"])

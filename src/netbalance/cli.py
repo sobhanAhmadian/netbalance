@@ -28,7 +28,6 @@ import numpy as np
 
 from netbalance import balance
 
-
 # ---------------------------------------------------------------------------
 # Encoding / decoding: string entity names <-> integer indices
 # ---------------------------------------------------------------------------
@@ -227,7 +226,8 @@ def _add_common_args(parser: argparse.ArgumentParser) -> None:
         help="Input file path, or '-' to read from stdin.  Default: stdin.",
     )
     parser.add_argument(
-        "-s", "--sep",
+        "-s",
+        "--sep",
         default=",",
         help="Column separator.  Default: ','.",
     )
@@ -261,14 +261,16 @@ def _build_balance_parser() -> argparse.ArgumentParser:
     _add_common_args(p)
 
     p.add_argument(
-        "-o", "--output",
+        "-o",
+        "--output",
         default=None,
         help="Output file path.  Default: stdout.",
     )
     p.add_argument(
-        "-m", "--method",
-        required=True,
+        "-m",
+        "--method",
         choices=["balanced", "entity-balanced"],
+        default="entity-balanced",
         help="Balancing strategy.",
     )
     p.add_argument(
@@ -300,13 +302,42 @@ def _build_balance_parser() -> argparse.ArgumentParser:
         default=False,
         help="Initialise SA with uniform sampling instead of degree-guided.",
     )
-    eb.add_argument("--max-iter", type=int, default=1000, help="SA iterations.  Default: 1000.")
-    eb.add_argument("--initial-temp", type=float, default=10.0, help="SA initial temperature.  Default: 10.0.")
-    eb.add_argument("--cooling-rate", type=float, default=0.99, help="SA cooling rate.  Default: 0.99.")
-    eb.add_argument("--delta", type=float, default=1.0, help="Weight of graph-size term.  Default: 1.0.")
-    eb.add_argument("--ent-desired", type=float, default=1.0, help="Target entropy.  Default: 1.0.")
-    eb.add_argument("--gamma-penalty", type=float, default=1.0, help="Degree penalty for heuristic init.  Default: 1.0.")
-    eb.add_argument("--entropy-track", default=None, metavar="PATH", help="Save per-iteration entropy to this CSV.")
+    eb.add_argument(
+        "--max-iter", type=int, default=1000, help="SA iterations.  Default: 1000."
+    )
+    eb.add_argument(
+        "--initial-temp",
+        type=float,
+        default=10.0,
+        help="SA initial temperature.  Default: 10.0.",
+    )
+    eb.add_argument(
+        "--cooling-rate",
+        type=float,
+        default=0.99,
+        help="SA cooling rate.  Default: 0.99.",
+    )
+    eb.add_argument(
+        "--delta",
+        type=float,
+        default=1.0,
+        help="Weight of graph-size term.  Default: 1.0.",
+    )
+    eb.add_argument(
+        "--ent-desired", type=float, default=1.0, help="Target entropy.  Default: 1.0."
+    )
+    eb.add_argument(
+        "--gamma-penalty",
+        type=float,
+        default=1.0,
+        help="Degree penalty for heuristic init.  Default: 1.0.",
+    )
+    eb.add_argument(
+        "--entropy-track",
+        default=None,
+        metavar="PATH",
+        help="Save per-iteration entropy to this CSV.",
+    )
 
     p.set_defaults(func=_run_balance)
     return p
@@ -332,14 +363,16 @@ def _run_balance(args: argparse.Namespace) -> None:
 
     if args.method == "balanced":
         result = balance.balanced(
-            associations, node_names,
+            associations,
+            node_names,
             negative_ratio=args.negative_ratio,
             seed=args.seed,
         )
     else:
         init_method = "balanced" if args.no_heuristic_init else "degree_guided"
         result = balance.entity_balanced(
-            associations, node_names,
+            associations,
+            node_names,
             negative_ratio=args.negative_ratio,
             seed=args.seed,
             max_iter=args.max_iter,
@@ -390,7 +423,8 @@ def _build_viz_parser() -> argparse.ArgumentParser:
     _add_common_args(p)
 
     p.add_argument(
-        "-o", "--output",
+        "-o",
+        "--output",
         default=None,
         metavar="PATH",
         help=(
@@ -424,15 +458,51 @@ def _build_viz_parser() -> argparse.ArgumentParser:
     )
 
     style = p.add_argument_group("styling")
-    style.add_argument("--node-radius", type=float, default=0.3, help="Node circle radius.  Default: 0.3.")
-    style.add_argument("--ring-width", type=float, default=0.1, help="Proportion ring width.  Default: 0.1.")
-    style.add_argument("--pos-edge-width", type=float, default=2.0, help="Positive edge width.  Default: 2.0.")
-    style.add_argument("--neg-edge-width", type=float, default=2.0, help="Negative edge width.  Default: 2.0.")
-    style.add_argument("--pos-color", default="#66C2A5", help="Positive edge/ring colour.  Default: #66C2A5.")
-    style.add_argument("--neg-color", default="#D53E4F", help="Negative edge/ring colour.  Default: #D53E4F.")
-    style.add_argument("--a-color", default="#FEE08B", help="Cluster-A node colour.  Default: #FEE08B.")
-    style.add_argument("--b-color", default="#5E4FA2", help="Cluster-B node colour.  Default: #5E4FA2.")
-    style.add_argument("--ring-bg-color", default="#e0e0e0", help="Ring background colour.  Default: #e0e0e0.")
+    style.add_argument(
+        "--node-radius",
+        type=float,
+        default=0.3,
+        help="Node circle radius.  Default: 0.3.",
+    )
+    style.add_argument(
+        "--ring-width",
+        type=float,
+        default=0.1,
+        help="Proportion ring width.  Default: 0.1.",
+    )
+    style.add_argument(
+        "--pos-edge-width",
+        type=float,
+        default=2.0,
+        help="Positive edge width.  Default: 2.0.",
+    )
+    style.add_argument(
+        "--neg-edge-width",
+        type=float,
+        default=2.0,
+        help="Negative edge width.  Default: 2.0.",
+    )
+    style.add_argument(
+        "--pos-color",
+        default="#66C2A5",
+        help="Positive edge/ring colour.  Default: #66C2A5.",
+    )
+    style.add_argument(
+        "--neg-color",
+        default="#D53E4F",
+        help="Negative edge/ring colour.  Default: #D53E4F.",
+    )
+    style.add_argument(
+        "--a-color", default="#FEE08B", help="Cluster-A node colour.  Default: #FEE08B."
+    )
+    style.add_argument(
+        "--b-color", default="#5E4FA2", help="Cluster-B node colour.  Default: #5E4FA2."
+    )
+    style.add_argument(
+        "--ring-bg-color",
+        default="#e0e0e0",
+        help="Ring background colour.  Default: #e0e0e0.",
+    )
 
     p.set_defaults(func=_run_viz)
     return p
@@ -448,6 +518,7 @@ def _run_viz(args: argparse.Namespace) -> None:
         Parsed CLI arguments.
     """
     import matplotlib
+
     if args.output:
         matplotlib.use("Agg")
     import matplotlib.pyplot as plt
