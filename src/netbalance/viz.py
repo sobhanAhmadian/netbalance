@@ -148,7 +148,8 @@ def draw_bipartite_graph(
             )
 
     # -- labels ------------------------------------------------------------
-    nx.draw_networkx_labels(G, positions, labels=labels, font_size=10, ax=ax)
+    font_size = _label_font_size(ax, labels, node_radius, positions)
+    nx.draw_networkx_labels(G, positions, labels=labels, font_size=font_size, ax=ax)
 
     ax.set_aspect("equal")
     ax.set_ylim(
@@ -162,6 +163,34 @@ def draw_bipartite_graph(
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
+
+
+def _label_font_size(
+    ax: plt.Axes,
+    labels: dict,
+    node_radius: float,
+    positions: dict,
+) -> float:
+    """
+    Return a font size (pt) so the longest label fits inside a node circle.
+
+    Converts ``node_radius`` from data units to points using the figure width
+    and the x-span of the layout, then solves for the font size that keeps the
+    widest label within the node diameter.
+    """
+    max_chars = max((len(str(v)) for v in labels.values()), default=1)
+
+    x_vals = [p[0] for p in positions.values()]
+    x_span = (max(x_vals) - min(x_vals) + 1) if len(x_vals) > 1 else 1
+
+    # ~80 % of the figure width is occupied by the axes after typical margins
+    axes_width_pts = ax.figure.get_figwidth() * 72 * 0.80
+    pts_per_unit = axes_width_pts / x_span
+    node_diameter_pts = 2 * node_radius * pts_per_unit
+
+    # average character width ≈ 0.6 × font size in points
+    font_size = node_diameter_pts / (max_chars * 0.6)
+    return max(4.0, min(14.0, font_size))
 
 
 def _draw_ringed_node(
