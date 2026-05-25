@@ -8,7 +8,7 @@ license = { file = "LICENSE" }
 dependencies = ["numpy>=2.0", "networkx>=3.0", "matplotlib>=3.7"]
 name = "binet-pkg"
 requires-python = ">= 3.11"
-version = "0.1.0"
+version = "0.1.1"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
