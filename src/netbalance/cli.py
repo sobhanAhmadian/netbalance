@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-binet — balance and visualize interaction networks from the command line.
+netbalance — balance and visualize interaction networks from the command line.
 
 Subcommands
 -----------
@@ -17,14 +17,14 @@ Examples
 ::
 
     # balance
-    binet balance data.csv --method balanced
-    binet balance data.csv -m entity-balanced --heuristic-init -o out.csv
-    cat data.csv | binet balance - -m balanced --negative-ratio 2.0
+    netbalance balance data.csv --method balanced
+    netbalance balance data.csv -m entity-balanced --heuristic-init -o out.csv
+    cat data.csv | netbalance balance - -m balanced --negative-ratio 2.0
 
     # visualize
-    binet viz data.csv -o graph.png
-    binet viz data.csv --figsize 8 6 --pos-color steelblue
-    cat data.csv | binet viz - --format pdf -o graph.pdf
+    netbalance viz data.csv -o graph.png
+    netbalance viz data.csv --figsize 8 6 --pos-color steelblue
+    cat data.csv | netbalance viz - --format pdf -o graph.pdf
 """
 
 from __future__ import annotations
@@ -36,7 +36,7 @@ from collections import OrderedDict
 
 import numpy as np
 
-from binet import balance
+from netbalance import balance
 
 
 # ---------------------------------------------------------------------------
@@ -462,7 +462,7 @@ def _run_viz(args: argparse.Namespace) -> None:
     if args.output:
         matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    from binet.viz import draw_bipartite_graph
+    from netbalance.viz import draw_bipartite_graph
 
     header, rows = _open_input(args.input, args.sep)
 
@@ -524,7 +524,7 @@ def build_parser() -> argparse.ArgumentParser:
     argparse.ArgumentParser
     """
     parser = argparse.ArgumentParser(
-        prog="binet",
+        prog="netbalance",
         description="Balance and visualize multi-cluster interaction networks.",
     )
     subs = parser.add_subparsers(dest="command", help="Available commands.")
@@ -535,7 +535,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> None:
     """
-    Entry point for the ``binet`` command.
+    Entry point for the ``netbalance`` command.
 
     Parameters
     ----------

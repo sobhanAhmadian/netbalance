@@ -1,13 +1,13 @@
 # netbalance
 
-**binet** is a Python library and CLI tool for balancing and visualizing multi-cluster interaction (association) networks.
+**netbalance** is a Python library and CLI tool for balancing and visualizing multi-cluster interaction (association) networks.
 
 The core problem it solves is **negative sampling**: given a set of positive interaction edges between entities, produce a balanced dataset by selecting an appropriate set of negative (non-interacting) edges.
 
 ## Installation
 
 ```bash
-pip install binet
+pip install netbalance
 ```
 
 ## Data format
@@ -26,23 +26,23 @@ The `viz` subcommand requires exactly 2 entity columns (bipartite).
 
 ```bash
 # Balance using uniform random negative sampling
-binet balance data.csv --method balanced
+netbalance balance data.csv --method balanced
 
 # Balance using simulated annealing for uniform per-entity degree entropy
-binet balance data.csv --method entity-balanced -o balanced.csv
+netbalance balance data.csv --method entity-balanced -o balanced.csv
 
 # Control the ratio of negatives to positives (default: 1.0)
-binet balance data.csv -m balanced --negative-ratio 2.0
+netbalance balance data.csv -m balanced --negative-ratio 2.0
 
 # Read from stdin
-cat data.csv | binet balance - -m balanced
+cat data.csv | netbalance balance - -m balanced
 
 # Visualize a bipartite network (opens interactive window)
-binet viz data.csv
+netbalance viz data.csv
 
 # Save the figure
-binet viz data.csv -o graph.png
-binet viz data.csv -o graph.pdf --figsize 10 8
+netbalance viz data.csv -o graph.png
+netbalance viz data.csv -o graph.pdf --figsize 10 8
 ```
 
 ### `balance` options
@@ -72,8 +72,8 @@ binet viz data.csv -o graph.pdf --figsize 10 8
 
 ```python
 import numpy as np
-from binet.balance import balanced, degree_guided, entity_balanced, compute_stats
-from binet.cli import encode, decode
+from netbalance.balance import balanced, degree_guided, entity_balanced, compute_stats
+from netbalance.cli import encode, decode
 
 # Load and encode your CSV data
 # associations: np.ndarray of shape (n_edges, n_clusters + 1)

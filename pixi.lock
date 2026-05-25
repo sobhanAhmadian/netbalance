@@ -518,12 +518,6 @@ packages:
   - pkg:pypi/asttokens?source=hash-mapping
   size: 28797
   timestamp: 1763410017955
-- pypi: ./
-  name: binet
-  version: 0.1.0
-  sha256: 8865f2cff5185369bada869d0c5720477591c849ca90860f44f74adfd13dc1a7
-  requires_python: '>=3.11'
-  editable: true
 - conda: https://conda.anaconda.org/conda-forge/linux-64/brotli-1.2.0-hed03a55_1.conda
   sha256: e511644d691f05eb12ebe1e971fd6dc3ae55a4df5c253b4e1788b789bdf2dfa6
   md5: 8ccf913aaba749a5496c17629d859ed1
@@ -3328,6 +3322,16 @@ packages:
   - pkg:pypi/nest-asyncio?source=hash-mapping
   size: 11543
   timestamp: 1733325673691
+- pypi: ./
+  name: netbalance
+  version: 0.1.1
+  sha256: d6137af6ca06ccd5a8b2e90ad8a2f78eaf75f7c1fbf354020739f7cad8ed91f8
+  requires_dist:
+  - numpy>=2.0
+  - networkx>=3.0
+  - matplotlib>=3.7
+  requires_python: '>=3.11'
+  editable: true
 - conda: https://conda.anaconda.org/conda-forge/noarch/networkx-3.6.1-pyhcf101f3_0.conda
   sha256: f6a82172afc50e54741f6f84527ef10424326611503c64e359e25a19a8e4c1c6
   md5: a2c1eeadae7a309daed9d62c96012a2b
