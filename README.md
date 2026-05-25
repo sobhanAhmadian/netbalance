@@ -1,4 +1,4 @@
-# binet
+# netbalance
 
 **binet** is a Python library and CLI tool for balancing and visualizing multi-cluster interaction (association) networks.
 
