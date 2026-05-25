@@ -2,7 +2,9 @@
 
 **netbalance** is a Python library and CLI tool for balancing and visualizing multi-cluster interaction (association) networks.
 
-![netbalance](logo.svg)
+<p align="center">
+    <img src="logo.svg" alt="netbalance" />
+</p>
 
 ## Installation
 
