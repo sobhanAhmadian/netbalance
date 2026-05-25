@@ -4,7 +4,7 @@ authors = [
 ]
 description = "Balance and visualize multi-cluster interaction networks"
 readme = "README.md"
-license = { text = "MIT" }
+license = { file = "LICENSE" }
 dependencies = [
     "numpy>=2.0",
     "networkx>=3.0",
