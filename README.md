@@ -64,3 +64,27 @@ The resulting graph is shown below:
 cat data/virus-host.csv | netbalance --seed 0 --max-iter 20000 --delta 0.001 --no-heuristic
 ```
 
+### netbalance in Snakemake
+
+This is an example Snakemake workflow that runs netbalance on a virus-host interaction network with 4 different random seeds, producing 4 balanced datasets.
+
+```python
+rule all:
+    input:
+        expand("virus-host-entity-balanced-seed-{seed}.csv", seed=range(1, 5))
+
+
+rule netbalance:
+    input:
+        "virus-host.csv"
+    output:
+        "virus-host-entity-balanced-seed-{seed}.csv"
+    shell:
+        """
+        netbalance {input} \
+            -o {output} \
+            --seed {wildcards.seed} \
+            --max-iter 1000 \
+            --delta 0.01
+        """
+```
