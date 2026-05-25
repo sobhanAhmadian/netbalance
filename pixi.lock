@@ -3412,8 +3412,8 @@ packages:
   timestamp: 1733325673691
 - pypi: ./
   name: netbalance
-  version: 0.1.2
-  sha256: ba4085d07b59d06c3f5e6d31751108fd4970886643cb816e69bd859b58f89459
+  version: 0.2.0
+  sha256: e2833855a0d718ce48d843cd9e94d5cb9c8d7baf5b96502d7b741d7ff4ecf167
   requires_dist:
   - numpy>=2.0
   - networkx>=3.0
