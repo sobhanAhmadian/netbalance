@@ -5,14 +5,16 @@ authors = [
 description = "Balance and visualize multi-cluster interaction networks"
 readme = "README.md"
 license = { file = "LICENSE" }
-dependencies = [
-    "numpy>=2.0",
-    "networkx>=3.0",
-    "matplotlib>=3.7",
-]
+dependencies = ["numpy>=2.0", "networkx>=3.0", "matplotlib>=3.7"]
 name = "binet"
 requires-python = ">= 3.11"
 version = "0.1.0"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
 
 [project.urls]
 Homepage = "https://github.com/sobhanAhmadian/binet"
