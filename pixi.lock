@@ -3413,7 +3413,7 @@ packages:
 - pypi: ./
   name: netbalance
   version: 0.1.2
-  sha256: e30e06da0a36068231bd9837cdf9dd4dc9aa548277601a2c618160cda4babd29
+  sha256: ba4085d07b59d06c3f5e6d31751108fd4970886643cb816e69bd859b58f89459
   requires_dist:
   - numpy>=2.0
   - networkx>=3.0
