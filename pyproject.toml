@@ -40,6 +40,12 @@ numpy = ">=2.4.6,<3"
 networkx = ">=3.6.1,<4"
 matplotlib = ">=3.10.9,<4"
 ipykernel = ">=7.2.0,<8"
+pytest = ">=9.0.3,<10"
+python-dotenv = ">=1.2.2,<2"
+isort = ">=8.0.1,<9"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
 
 [project.scripts]
 netbalance = "netbalance.cli:main"
