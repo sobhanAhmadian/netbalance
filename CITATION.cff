@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use netbalance in your research, please cite the paper below."
+title: "netbalance"
+type: software
+authors:
+  - given-names: Sobhan
+    family-names: Ahmadian
+repository-code: "https://github.com/sobhanAhmadian/netbalance"
+license: MIT
+version: 0.2.0
+preferred-citation:
+  type: article
+  title: "Reliable evaluation and learning in multi-input biological association prediction"
+  authors:
+    - given-names: Sobhan
+      family-names: Ahmadian
+    - given-names: Lucas
+      family-names: Paoli
+    - given-names: Hesam
+      family-names: Montazeri
+  journal: "Briefings in Bioinformatics"
+  volume: 27
+  issue: 4
+  start: bbag376
+  month: 7
+  year: 2026
+  doi: "10.1093/bib/bbag376"
+  url: "https://doi.org/10.1093/bib/bbag376"
